@@ -565,6 +565,29 @@ local ResizeBtn = SetChildren(SetProps(MakeElement("Button"), {
 		Size = UDim2.new(1, 0, 0, 50)
 	})
 
+	local TimerLabel = AddThemeObject(SetProps(MakeElement("Label", "00:00", WindowConfig.HidePremium and 14 or 13), {
+		Size = UDim2.new(1, -60, 0, 13),
+		Position = WindowConfig.HidePremium and UDim2.new(0, 50, 0, 19) or UDim2.new(0, 50, 0, 12),
+		Font = Enum.Font.FredokaOne,
+		ClipsDescendants = true
+	}), "Text")
+
+	local StartTime = os.time()
+	task.spawn(function()
+		while task.wait(1) do
+			if not TimerLabel or not TimerLabel.Parent then break end
+			local elapsed = os.time() - StartTime
+			local hours = math.floor(elapsed / 3600)
+			local mins = math.floor((elapsed % 3600) / 60)
+			local secs = elapsed % 60
+			if hours > 0 then
+				TimerLabel.Text = string.format("%02d:%02d:%02d", hours, mins, secs)
+			else
+				TimerLabel.Text = string.format("%02d:%02d", mins, secs)
+			end
+		end
+	end)
+
 	local WindowStuff = AddThemeObject(SetChildren(SetProps(MakeElement("RoundFrame", Color3.fromRGB(255, 255, 255), 0, 10), {
 		Size = UDim2.new(0, 150, 1, -50),
 		Position = UDim2.new(0, 0, 0, 50),
@@ -611,12 +634,7 @@ local ResizeBtn = SetChildren(SetProps(MakeElement("Button"), {
 				AddThemeObject(MakeElement("Stroke"), "Stroke"),
 				MakeElement("Corner", 1)
 			}),
-			AddThemeObject(SetProps(MakeElement("Label", "Zyney", WindowConfig.HidePremium and 14 or 13), {
-				Size = UDim2.new(1, -60, 0, 13),
-				Position = WindowConfig.HidePremium and UDim2.new(0, 50, 0, 19) or UDim2.new(0, 50, 0, 12),
-				Font = Enum.Font.FredokaOne,
-				ClipsDescendants = true
-			}), "Text"),
+			TimerLabel,
 			AddThemeObject(SetProps(MakeElement("Label", "Your New Script", 12), {
 				Size = UDim2.new(1, -60, 0, 12),
 				Position = UDim2.new(0, 50, 1, -25),
