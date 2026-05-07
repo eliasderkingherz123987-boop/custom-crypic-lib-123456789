@@ -573,7 +573,8 @@ local ResizeBtn = SetChildren(SetProps(MakeElement("Button"), {
 	}), "Text")
 })
 
-local SearchBox = AddThemeObject(SetProps(Create("TextBox", {
+local SearchBox = Instance.new("TextBox")
+SetProps(SearchBox, {
 	Size = UDim2.new(0, 0, 0, 30),
 	Position = UDim2.new(1, -170, 0, 10),
 	AnchorPoint = Vector2.new(1, 0),
@@ -584,12 +585,21 @@ local SearchBox = AddThemeObject(SetProps(Create("TextBox", {
 	TextSize = 13,
 	ClipsDescendants = true,
 	Visible = false,
-}), "Second"), "Main")
+	Name = "SearchBox"
+})
+AddThemeObject(SearchBox, "Second")
 
-Create("UICorner", {CornerRadius = UDim.new(0, 4)}, {SearchBox})
-AddThemeObject(Create("UIStroke", {Thickness = 1, Parent = SearchBox}), "Stroke")
+local SearchBoxCorner = Instance.new("UICorner")
+SearchBoxCorner.CornerRadius = UDim.new(0, 4)
+SearchBoxCorner.Parent = SearchBox
 
-local GoBtn = AddThemeObject(SetProps(Create("TextButton", {
+local SearchBoxStroke = Instance.new("UIStroke")
+SearchBoxStroke.Thickness = 1
+SearchBoxStroke.Parent = SearchBox
+AddThemeObject(SearchBoxStroke, "Stroke")
+
+local GoBtn = Instance.new("TextButton")
+SetProps(GoBtn, {
 	Size = UDim2.new(0, 30, 0, 20),
 	Position = UDim2.new(1, -5, 0.5, -10),
 	AnchorPoint = Vector2.new(1, 0),
@@ -599,8 +609,12 @@ local GoBtn = AddThemeObject(SetProps(Create("TextButton", {
 	BackgroundTransparency = 0,
 	Visible = false,
 	Parent = SearchBox
-}), "Text"), "Text")
-Create("UICorner", {CornerRadius = UDim.new(0, 4)}, {GoBtn})
+})
+AddThemeObject(GoBtn, "Text")
+
+local GoBtnCorner = Instance.new("UICorner")
+GoBtnCorner.CornerRadius = UDim.new(0, 4)
+GoBtnCorner.Parent = GoBtn
 
 local searchOpen = false
 SearchBtn.MouseButton1Click:Connect(function()
